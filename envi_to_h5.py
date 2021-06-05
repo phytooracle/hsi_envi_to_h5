@@ -136,6 +136,13 @@ def main():
     """Make a jazz noise here"""
 
     args = get_args()
+
+    if not os.path.isdir(args.rgb_outdir):
+        os.makedirs(args.rgb_outdir)
+
+    if not os.path.isdir(args.h5_outdir):
+        os.makedirs(args.h5_outdir)
+
     process_data(args.hdr_file)
     
 
