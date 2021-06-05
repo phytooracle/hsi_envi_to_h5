@@ -126,7 +126,6 @@ def process_data(hdr_file):
         data_file.create_dataset("hyperspectral", data=rot_img[:,:,:], chunks=True, compression='szip')
         
         dict_m = img.metadata
-        dict_m.update(meta_dict)
 
         for k,v in dict_m.items():
             data_file.attrs[k] = dict_m[k]
