@@ -14,7 +14,6 @@ import numpy as np
 import glob
 import tempfile
 import warnings
-import matplotlib.pyplot as plt
 import pandas as pd
 from datetime import datetime
 import json
@@ -123,7 +122,7 @@ def process_data(hdr_file):
     
     # Convert ENVI data to H5 with metadata
     with h5py.File(f'{os.path.join(args.h5_outdir, out_name+".h5")}', 'w') as data_file:
-        
+
         data_file.create_dataset("hyperspectral", data=rot_img[:,:,:], chunks=True, compression='szip')
         
         dict_m = img.metadata
