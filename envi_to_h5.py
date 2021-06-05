@@ -40,7 +40,7 @@ def get_args():
                         type=str,
                         default='hsi_rgb_out')
 
-    parser.add_argument('-h',
+    parser.add_argument('-h5',
                         '--h5_outdir',
                         help='H5 output directory',
                         metavar='h5_outdir',
