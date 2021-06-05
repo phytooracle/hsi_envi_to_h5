@@ -108,6 +108,8 @@ def generate_save_rgb(img, rot_img, out_name):
 # --------------------------------------------------
 def process_data(hdr_file):
     
+    args = get_args()
+    
     # Open necessary files 
     bin_file, meta_file = get_files(hdr_file)
     img = envi.open(hdr_file, bin_file)
