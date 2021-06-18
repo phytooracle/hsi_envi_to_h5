@@ -127,33 +127,21 @@ def generate_save_rgb(img, rot_img, out_name):
 
 
 # --------------------------------------------------
-def generate_soil_mask(rot_img, x_lim, band = 700):
-    
-    original = rot_img[:, x_lim[0]:x_lim[1],band]
-    mask = rot_img[:, x_lim[0]:x_lim[1], band]
-    mask = np.copy(mask)
-
-    mask[mask<=3000]=0
-    mask[mask>0]=255
-
-    masked_array = rot_img[:, x_lim[0]:x_lim[1],:]
-    masked_array[np.where(mask==0)] = 0
-
-    return mask, masked_array
-
-
-# --------------------------------------------------
 def generate_ndvi_mask(rot_img, x_lim, wavelength_floats):
     
-    #wavelength_floats = f.attrs['wavelength'].astype(float)
-    b1 = closest(wavelength_floats, 607.0)[0]
-    b2 = closest(wavelength_floats, 802.5)[0]
+    # wavelength_floats = f.attrs['wavelength'].astype(float)
+    # b1 = closest(wavelength_floats, 607.0)[0]
+    # b2 = closest(wavelength_floats, 802.5)[0]
+    b1 = closest(wavelength_floats, 640)[0]
+    b2 = closest(wavelength_floats, 850)[0]
 
     mask = ndvi(rot_img[:, x_lim[0]:x_lim[1],:], b1, b2)
     mask = np.copy(mask)
 
-    mask[mask<0.4]=0
-    mask[mask>=0.4]=255
+    # mask[mask<0.4]=0
+    # mask[mask>=0.4]=255
+    mask[mask<0.3]=0
+    mask[mask>=0.3]=255
 
     masked_array = rot_img[:, x_lim[0]:x_lim[1],:]
     masked_array = np.copy(masked_array)
@@ -196,6 +184,7 @@ def process_data(hdr_file):
     # Generate pseudo-RGB image
     generate_save_rgb(img, rot_img, out_name)
 
+    # NDVI soil masking.
     if args.max_x is None:
 
         n_row, n_col, n_bands = rot_img.shape
@@ -204,10 +193,6 @@ def process_data(hdr_file):
     else: 
         x_lim = (args.min_x, args.max_x)
 
-    # soil_mask, soil_masked_array = generate_soil_mask(rot_img, x_lim, band=args.band)
-    # soil_mean_refl = get_mean_reflectance(soil_masked_array)
-
-    # NDVI soil masking.
     ndvi_mask, ndvi_masked_array = generate_ndvi_mask(rot_img, x_lim, wavelength_floats)
     ndvi_mean_refl = get_mean_reflectance(ndvi_masked_array)
 
@@ -215,8 +200,6 @@ def process_data(hdr_file):
     with h5py.File(f'{os.path.join(args.h5_outdir, out_name+".h5")}', 'w') as data_file:
 
         data_file.create_dataset('hyperspectral', data=rot_img[:,:,:], chunks=True, compression='szip')
-        # data_file.create_dataset('soil_mask', data=soil_mask)
-        # data_file.create_dataset('soil_mean_spectra', data=soil_mean_refl)
         data_file.create_dataset('ndvi_mask', data=ndvi_mask)
         data_file.create_dataset('ndvi_mean_spectra', data=ndvi_mean_refl)
         
