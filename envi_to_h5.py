@@ -131,6 +131,8 @@ def process_data(hdr_file):
 
         for k,v in dict_m.items():
             data_file.attrs[k] = dict_m[k]
+
+    print(f'Processing complete. See output at {args.h5_outdir}.')
             
             
 # --------------------------------------------------
