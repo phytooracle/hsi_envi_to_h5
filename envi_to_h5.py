@@ -46,13 +46,6 @@ def get_args():
                         metavar='h5_outdir',
                         type=str,
                         default='hsi_h5_out')
-    
-    parser.add_argument('-b',
-                        '--band',
-                        help='Band to use for soil masking.',
-                        metavar='band',
-                        type=int,
-                        default=700)
 
     parser.add_argument('-min',
                         '--min_x',
