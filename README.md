@@ -17,6 +17,6 @@ This is a repository that includes all the code to convert an ENVI format hypers
 ## Running the Script
 
 * Docker:
-    * Docker run docker://phytooracle/hsi_envi_to_h5 [params]
+    * docker run docker://phytooracle/hsi_envi_to_h5 [params]
 * Singularity:
-    * Singularity run docker://phytooracle/hsi_envi_to_h5 [params]
+    * singularity run docker://phytooracle/hsi_envi_to_h5 [params]
